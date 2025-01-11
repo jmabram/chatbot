@@ -14,7 +14,6 @@ youtube_url = st.text_input("YouTube Video URL", placeholder="https://youtu.be/e
 # Function to download YouTube video using yt-dlp
 def download_video(youtube_url):
     try:
-        # Create a "downloads" directory if it doesn't exist
         if not os.path.exists("downloads"):
             os.makedirs("downloads")
         
@@ -29,11 +28,12 @@ def download_video(youtube_url):
         ]
         subprocess.run(download_command, check=True)
 
-        # Get the downloaded file path
         downloaded_files = os.listdir("downloads")
         for file in downloaded_files:
             if file.startswith("video"):
                 return os.path.join("downloads", file)
+    except subprocess.CalledProcessError as e:
+        return f"Command failed: {e}"
     except Exception as e:
         return str(e)
 
